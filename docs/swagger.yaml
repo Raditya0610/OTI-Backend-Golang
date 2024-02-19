@@ -1,4 +1,359 @@
+definitions:
+  controller.LoginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  controller.PasswordUpdateInput:
+    properties:
+      confirm_password:
+        type: string
+      new_password:
+        type: string
+      old_password:
+        type: string
+    required:
+    - confirm_password
+    - new_password
+    - old_password
+    type: object
+  controller.RegisterInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  controller.enrollmentInput:
+    properties:
+      eventID:
+        type: integer
+      informasi:
+        type: string
+      userID:
+        type: integer
+    type: object
+  controller.eventInput:
+    properties:
+      capacity:
+        type: integer
+      deskripsi:
+        type: string
+      lokasi:
+        type: string
+      nama:
+        type: string
+      tanggalMulai:
+        type: string
+      tanggalSelesai:
+        type: string
+    type: object
+  models.Enrollment:
+    properties:
+      createdAt:
+        type: string
+      eventID:
+        type: integer
+      id:
+        type: integer
+      informasi:
+        type: string
+      userID:
+        type: integer
+    type: object
+  models.Event:
+    properties:
+      capacity:
+        type: integer
+      deskripsi:
+        type: string
+      enrollment:
+        items:
+          $ref: '#/definitions/models.Enrollment'
+        type: array
+      id:
+        type: integer
+      lokasi:
+        type: string
+      nama:
+        type: string
+      tanggalMulai:
+        type: string
+      tanggalSelesai:
+        type: string
+    type: object
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+paths:
+  /enrollment:
+    get:
+      description: Get a list of Enrollment.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Enrollment'
+            type: array
+      summary: Get all Enrollment.
+      tags:
+      - Enrollment
+    post:
+      description: Creating a new Enrollment.
+      parameters:
+      - description: the body to create a new enrollment
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.enrollmentInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Enrollment'
+      security:
+      - BearerToken: []
+      summary: Create New Enrollment.
+      tags:
+      - Enrollment
+  /enrollment/{id}:
+    delete:
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: enrollment id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete an enrollment
+      tags:
+      - Enrollment
+  /event:
+    get:
+      description: Get a list of Event.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Event'
+            type: array
+      summary: Get All Event.
+      tags:
+      - Event
+    post:
+      description: Creating a new event.
+      parameters:
+      - description: the body to create a new event
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.eventInput'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Event'
+      security:
+      - BearerToken: []
+      summary: Create New Event.
+      tags:
+      - Event
+  /event/{id}:
+    delete:
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: event id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+      security:
+      - BearerToken: []
+      summary: Delete an Event
+      tags:
+      - Event
+    get:
+      description: Get an Event by id.
+      parameters:
+      - description: event id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Event'
+      summary: Get Event.
+      tags:
+      - Event
+    put:
+      description: Update Event by id.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: event id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to update event
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.eventInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Event'
+      security:
+      - BearerToken: []
+      summary: Update Event.
+      tags:
+      - Event
+  /login:
+    post:
+      description: Logging in to get jwt token access
+      parameters:
+      - description: the body to login a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login as user
+      tags:
+      - Auth
+  /register:
+    post:
+      description: registering a user from public access.
+      parameters:
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.RegisterInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a user.
+      tags:
+      - Auth
+  /update-password/{id}:
+    put:
+      description: Update user's password.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to update user's password
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/controller.PasswordUpdateInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerToken: []
+      summary: Update user password.
+      tags:
+      - Auth
 swagger: "2.0"

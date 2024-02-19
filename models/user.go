@@ -4,18 +4,20 @@ import (
 	"html"
 	"strings"
 	"time"
+	"tugas-oti/utils/token"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	ID        uint      `json:"id" gorm:"primary_key"`
-	Username  string    `gorm:"not null;unique" json:"username"`
-	Email     string    `gorm:"not null;unique" json:"email"`
-	Password  string    `gorm:"not null;" json:"password"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID         uint         `json:"peserta_id" gorm:"primary_key"`
+	Username   string       `gorm:"not null;unique" json:"username"`
+	Email      string       `gorm:"not null;unique" json:"email"`
+	Password   string       `gorm:"not null;" json:"password"`
+	CreatedAt  time.Time    `json:"created_at"`
+	UpdatedAt  time.Time    `json:"updated_at"`
+	Enrollment []Enrollment `json : "pendaftar"`
 }
 
 func VerifyPassword(password, hashedPassword string) error {
