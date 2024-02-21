@@ -12,7 +12,7 @@ func ConnectDatabase() *gorm.DB {
 	username := "root"
 	password := ""
 	host := "tcp(127.0.0.1:3306)"
-	database := "db_event_oti"
+	database := "eventdb_oti"
 
 	dsn := fmt.Sprintf("%v:%v@%v/%v?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, database)
 
