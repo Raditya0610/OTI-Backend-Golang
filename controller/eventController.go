@@ -49,6 +49,10 @@ func CreateEvent(c *gin.Context) {
 		return
 	}
 
+	if len(input.Nama) > 190 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Nama event tidak boleh lebih dari 190 Character"})
+	}
+
 	event := models.Event{Nama: input.Nama,
 		Deskripsi:      input.Deskripsi,
 		TanggalMulai:   input.TanggalMulai,
@@ -114,6 +118,10 @@ func UpdateEvent(c *gin.Context) {
 	updatedInput.TanggalMulai = input.TanggalMulai
 	updatedInput.Lokasi = input.Lokasi
 	updatedInput.Capacity = input.Capacity
+
+	if len(updatedInput.Nama) > 190 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Nama event tidak boleh lebih dari 190 Character"})
+	}
 
 	db.Model(&event).Updates(updatedInput)
 
